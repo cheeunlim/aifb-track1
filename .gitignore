@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.DS_Store
+code_samples/
+cloud_function/
+temp_*/
+uploaded_*
+*.mp4
+full_dataset_registry.pkl
+GEMINI.md
