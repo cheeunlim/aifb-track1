@@ -6,7 +6,7 @@ GCP Workbench 환경에서 실행할 수 있는 노트북 형식에 최적화되
 ---
 
 ## **실습 파일**
-*   **실습 노트북**: [multimodal_search_v2.ipynb](multimodal_search_v2.ipynb)
+*   **실습 노트북**: [multimodal_search.ipynb](multimodal_search.ipynb)
 
 ---
 
