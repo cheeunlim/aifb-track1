@@ -1,4 +1,6 @@
 .venv/
+.agents/
+.gitignore
 __pycache__/
 .DS_Store
 code_samples/

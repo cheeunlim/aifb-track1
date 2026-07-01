@@ -121,3 +121,19 @@ Execute a secure clean-up script to force-delete the serverless collection via a
 
 > [!WARNING]
 > Always ensure you run the final **Notebook Phase 6 / README Phase 7 (Cell 41) resource cleanup** block to prevent any ongoing serverless database provisioning charges.
+
+
+---
+
+## **💡 워크숍 진행을 위한 코드 최적화 및 가속 팁**
+
+본 워크숍 실습에서는 원활한 진행을 위해 아래와 같은 튜닝이 반영되었습니다:
+1. **로컬 캐싱 정책**: 미디어 파일을 불필요하게 중복 다운로드하지 않도록 파일 시스템 존재 여부를 검사 후 선별 로드합니다.
+2. **데이터 서브셋 최적화**: 런타임 타임아웃과 과도한 API 트래픽 비용을 차단하기 위해 실습에 최적화된 소규모 서브셋만 색인에 활용합니다.
+3. **대체 리로드 전략 (Fallback Strategy)**: 실시간 연산 과정이 원격 환경 제약 등으로 오래 걸리는 경우, 미리 생성된 레지스트리 피클 아카이브(`full_dataset_registry.pkl`)를 파일 시스템이나 버킷에서 다이렉트로 복원하여 흐름을 중단 없이 이어가게 설계했습니다.
+
+### **프로덕션 스케일링 고려사항 (Production Scale-out)**
+엔터프라이즈 상용 시스템으로의 마이그레이션 시에는 다음과 같은 분산/병렬 아키텍처 요소를 고려해야 합니다:
+* **병렬 배치 처리 (Parallel processing)**: `concurrent.futures` 등을 적용하여 대량의 제미나이 임베딩/텍스트 생성 요청을 쓰레드 풀 단위로 다중 병렬 처리하여 대기시간을 대폭 감소시킵니다.
+* **일괄 배치 API (Batch API)**: 가능한 경우 대규모 비동기 데이터 일괄 분석 API 파이프라인을 호출하여 일률 색인을 실행합니다.
+* **분산 처리 파이프라인**: 테라바이트급 대규모 저장소 이관 시에는 Google Cloud Dataflow(Apache Beam 기반) 또는 Ray 클러스터를 통해 전체 전처리를 수백 개의 병렬 노드로 스케일 아웃시킵니다.
