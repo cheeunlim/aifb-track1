@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LensMosaic</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=12">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>LensMosaic <span id="tagline">— Your AI shopping lens</span></h1>
+      <div id="status-wrap">
+        <button id="status" type="button">Disconnected</button>
+      </div>
+    </header>
+
+    <main>
+      <div id="video-container">
+        <div id="video-intro">
+          <p><strong>LensMosaic</strong></p>
+          <h2>Your AI shopping lens</h2>
+          <p>아이템을 카메라로 비추고, 자연어로 얘기하거나, 타이핑 하세요.</p>
+          <ul id="video-intro-list">
+            <li>카메라에 비친 모습 확인하기</li>
+            <li>목소리를 듣고 대화하듯 답변하기</li>
+            <li>필요할 때 언제든 웹 검색하기</li>
+            <li>비슷한 상품 및 추천 아이템 찾기</li>
+          </ul>
+        </div>
+        <button id="start-btn" disabled>Start</button>
+        <div id="camera-controls">
+          <button id="flip-camera-btn" type="button" aria-label="Flip camera" title="Flip camera">↺</button>
+        </div>
+        <video id="camera" autoplay playsinline muted></video>
+        <canvas id="canvas" style="display:none"></canvas>
+        <div id="image-tile-wrap">
+          <button id="close-recommended-btn" type="button" aria-label="Close recommendations" title="Close recommendations">×</button>
+          <div id="image-tile"></div>
+        </div>
+      </div>
+
+      <div id="chat">
+        <div id="chat-empty-state">
+          <p>제가 직접 카메라를 보고, 목소리를 듣고, 웹을 검색해서 조건에 딱 맞는 상품을 찾아드릴 수 있어요.</p>
+          <div id="chat-empty-examples">
+            <button class="suggestion-btn" type="button" data-suggestion="무엇이 보이나요?">무엇이 보이나요?</button>
+            <button class="suggestion-btn" type="button" data-suggestion="이것과 유사한 제품을 찾아주세요.">이것과 유사한 제품을 찾아주세요.</button>
+            <button class="suggestion-btn" type="button" data-suggestion="이것과 잘 어울리는 것은 무엇일까요?">이것과 잘 어울리는 것은 무엇일까요?</button>
+            <button class="suggestion-btn" type="button" data-suggestion="가족을 위해 어울리는 선물을 찾아주세요.">가족을 위해 어울리는 선물을 찾아주세요.</button>
+          </div>
+        </div>
+        <div id="messages"></div>
+        <div id="input-bar">
+          <input type="text" id="text-input" placeholder="Type a message..." autocomplete="off">
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="item-popup">
+    <div id="popup-backdrop"></div>
+    <div id="popup-content">
+      <button id="popup-close">&times;</button>
+      <img id="popup-image" alt="">
+      <div id="popup-details">
+        <h2 id="popup-name"></h2>
+        <p id="popup-price"></p>
+        <p id="popup-description"></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/static/js/app.js?v=11"></script>
+</body>
+</html>
