@@ -40,6 +40,14 @@ aifb-track1/
 git clone https://github.com/cheeunlim/aifb-track1
 ```
 
+아래의 명령어를 실행하여 추가로 필요한 리소스를 설치합니다.
+
+```
+cd ~/aifb-track1
+chmod +x ./install.sh
+./install.sh
+```
+
 ## Qwiklab 실습 준비 완료!
 
 <br>
