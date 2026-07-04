@@ -29,20 +29,16 @@ multimodal-agent/
 
 ## Qwiklab 실습
 
-## 실습 Part 1: 상품 DB 생성 (약 20분 소요)
+## 실습 Part 1: 상품 DB 설명
 
 #### 1. 실습 자료의 /aifb-track1/session2/vs2_indexer.ipynb 를 클릭합니다.
 
-#### 2. `첫번째 셀`을 선택 후 (Ctrl + Enter 혹은 메뉴의 Run -> Run Selected Cell) 실행 후 완료될 때 까지 기다립니다. 커널 재시작 팝업이 뜬 이후 Run -> Run All Cells 를 실행합니다.
-
-아래 명령어를 Terminal 에서 실행하면 Long running job 의 상태를 확인할 수 있습니다.
-```
-gcloud vector-search operations list --location=asia-northeast1
-```
+#### 2. 4번 셀까지 (Ctrl + Enter 혹은 메뉴의 Run -> Run Selected Cell) 로 개별 셀을 실행하며 각 셀의 출력결과를 확인합니다.
 
 ## 실습 Part 2: Application 배포 (약 5분 소요)
 
-#### 3. 아래의 명령어를 이용해 Agent 를 Cloud Run 에 배포합니다. -----GEMINI_API_KEY----- 부분을 기록해둔 Key로 교체합니다. (Y/n) 선택이 나오면 엔터를 입력 합니다.
+#### 3. 아래의 명령어를 이용해 Agent 를 Cloud Run 에 배포합니다. -----GEMINI_API_KEY----- 부분을 기록해둔 Key로 교체합니다. 
+#### (Y/n) 선택이 나오면 엔터를 입력 합니다.
 ```
 cd ~/aifb-track1/session2
 gcloud run deploy lens-mosaic --source . --region "asia-northeast1" --set-env-vars GEMINI_API_KEY="-----GEMINI_API_KEY-----" --concurrency 500 --cpu 2 --memory 4Gi --timeout 3600 --min-instances 1 --max-instances 1 --execution-environment=gen2

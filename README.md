@@ -11,6 +11,8 @@
 aifb-track1/
 ├── session1/                   # Session 1 실습자료
 ├── session2/                   # Session 2 실습자료
+├── install.sh                  # 실습 환경 프로비져닝 스크립트
+├── session2_index_builder.sh   # 실습 환경 프로비져닝 스크립트
 └── README.md                   # Workshop 개요
 ```
 
@@ -40,12 +42,19 @@ aifb-track1/
 git clone https://github.com/cheeunlim/aifb-track1
 ```
 
-아래의 명령어를 실행하여 추가로 필요한 리소스를 설치합니다.
+아래의 명령어를 실행하여 추가로 필요한 리소스를 설치합니다. 
+
+최소 20분의 시간이 필요하며 이 시간동안 강의가 진행됩니다.
 
 ```
 cd ~/aifb-track1
 chmod +x ./install.sh
 ./install.sh
+```
+
+아래 명령어를 Terminal 에서 실행하면 Long running job 의 상태를 확인할 수 있습니다.
+```
+gcloud vector-search operations list --location=asia-northeast1
 ```
 
 ## Qwiklab 실습 준비 완료!
