@@ -44,7 +44,13 @@ git clone https://github.com/cheeunlim/aifb-track1
 
 아래의 명령어를 실행하여 추가로 필요한 리소스를 설치합니다. 
 
-최소 20분의 시간이 필요하며 이 시간동안 강의가 진행됩니다.
+`install.sh` 스크립트는 백그라운드에서 다음 4가지 작업을 순차적으로 수행합니다:
+1. **필수 파이썬 패키지 설치**: `google-cloud-vectorsearch` 등 필수 라이브러리 설치 및 업그레이드
+2. **GCS 버킷 생성**: `asia-northeast1` 리전에 `gs://${PROJECT_ID}-vs2` 이름으로 버킷 생성
+3. **실습 데이터 복사**: 샘플 상품 임베딩 데이터셋(`amazon-product-dataset-768-compact.jsonl`)을 생성한 버킷 내 `data/` 경로로 복사
+4. **인덱스 빌더 구동**: 백그라운드에서 `session2_index_builder.py` 스크립트를 구동하여 Google Cloud Vector Search 컬렉션 및 인덱스 빌드 작업 실행
+
+최소 20분의 시간이 필요하며 이 시간동안 세션1 강의가 진행됩니다.
 
 ```
 cd ~/aifb-track1
@@ -52,14 +58,29 @@ chmod +x ./install.sh
 ./install.sh
 ```
 
-아래 명령어를 Terminal 에서 실행하면 Long running job(인덱스 생성, 데이터 임포트 등)의 상태를 확인할 수 있습니다.
+## Qwiklab 실습 준비 완료!
+
+<br>
+
+## 세션1: 오후 1시 30분 - 오후 3시 30분
+### [`Gemini Embedding 2 & Vector Search 2 기반 크로스 모달(Cross-Modal) 검색 엔진 개발`](https://github.com/cheeunlim/aifb-track1/tree/main/session1)
+
+<br>
+
+## 세션2: 오후 3시 30분 - 오후 5시 00분
+### [`Gemini Live API와 크로스 모달(Cross-Modal) 검색 엔진을 결합한 실시간 대화형 멀티모달 쇼핑 에이전트 개발`](https://github.com/cheeunlim/aifb-track1/tree/main/session2)
+
+<br>
+
+### 참고 : 세션2 실습 시작 전 백그라운드 작업 상태 점검
+
+`install.sh` 실행으로 시작된 백그라운드 비동기 작업(Long running job)들의 진행 상태는 아래 명령어로 확인할 수 있습니다.
+
 ```bash
 gcloud vector-search operations list --location=asia-northeast1
 ```
 
-### 작업 상태 출력 결과 이해하기
-
-`list` 명령을 실행하면 생성된 비동기 작업(Operation)들의 목록이 아래와 같이 출력됩니다.
+명령어 실행 결과로 나타나는 작업 목록의 출력 예시는 다음과 같습니다.
 
 **출력 예시**:
 ```yaml
@@ -84,38 +105,19 @@ name: projects/qwiklabs-gcp-03-80bd6b7713ab/locations/asia-northeast1/operations
 
 
 1. **완료 상태 확인**: 
-   - 각 작업 정보 중 `done: true`로 표시된 것은 작업이 완료되었음을 의미합니다.
-   - 아직 진행 중인 작업은 `list` 출력 결과에서 `done: true` 필드가 나타나지 않고 생략됩니다 (상세 조회인 `describe` 명령어 실행 시에는 `done: false`로 표시됩니다).
-2. **작업 종류 (verb)**:
-   - `verb: create`는 인덱스나 컬렉션 생성 작업을 뜻합니다.
-3. **상세 정보 조회 (describe)**:
-   - 특정 작업의 상세 내용(진행 중인 작업의 완료 상태 등)을 확인하려면 `describe` 명령 뒤에 `operations list` 결과의 **`name` 필드에 명시된 전체 경로**(`projects/.../operations/...`)를 지정하여 실행합니다.
-   - **명령어**: `gcloud vector-search operations describe <OPERATION_NAME>`
-   - **예시** (`list` 결과에서 `name` 필드 값을 복사해 사용):
-     ```bash
-     gcloud vector-search operations describe projects/qwiklabs-gcp-03-80bd6b7713ab/locations/asia-northeast1/operations/operation-1783404860135-655ff4d2dd7b1-f926234a-de3ac43b
-     ```
-4. **총 완료되어야 하는 작업 개수**:
-   - `install.sh` 실행 시 백그라운드에서 진행되는 작업은 **총 4개**의 비동기 작업(Operation)으로 구성되어 있습니다.
-   - `gcloud vector-search operations list` 실행 시 이 4개 작업의 상태가 모두 **`done: true`**로 나타나야 실습 환경 구성이 완전히 완료된 것입니다.
-   - **4단계 작업 구성**:
-     1. **컬렉션 생성** (Create Collection): `verb: create` (target: `.../collections/amazon-product-768-compact`)
-     2. **데이터 임포트** (Import Data): metadata type이 `...ImportDataObjectsMetadata`인 작업
-     3. **이미지 임베딩 인덱스 생성** (Create Index): `verb: create` (target: `.../indexes/idx-image-embedding`)
-     4. **텍스트 임베딩 인덱스 생성** (Create Index): `verb: create` (target: `.../indexes/idx-text-embedding`)
+   - `done: true`가 표시된 항목은 완료된 작업입니다. 진행 중인 작업은 `done` 필드가 나타나지 않으며, 상세 확인은 `describe` 명령어를 사용합니다.
+2. **작업 상세 조회 (describe)**:
+   - 각 작업 항목의 `name:` 필드에 명시된 전체 경로를 지정하여 상세 조회가 가능합니다.
+   ```bash
+   gcloud vector-search operations describe <OPERATION_NAME>
+   ```
+   - **예시**: `gcloud vector-search operations describe projects/qwiklabs-gcp-03-80bd6b7713ab/locations/asia-northeast1/operations/operation-1783409218856-6560050faa6fd-28a4311e-5661eba3`
+3. **세션2 실습 진행을 위한 최소 완료 조건 및 소요 시간**:
+   - `install.sh` 실행 시 총 4개의 백그라운드 작업이 순차적으로 진행됩니다.
+   - **실습 진행 가능 기준**: **1번(컬렉션 생성)과 2번(데이터 임포트) 작업만 완료(`done: true`)되면 세션2 실습을 바로 진행**할 수 있습니다. (생성 소요 시간: 약 20분)
+   - **4단계 작업 흐름**:
+     1. **컬렉션 생성** (Create Collection): target 경로가 `.../collections/amazon-product-768-compact`인 작업 (**세션2 실습 시작전 완료 필수**)
+     2. **데이터 임포트** (Import Data): metadata type이 `...ImportDataObjectsMetadata`인 작업 (**세션2 실습 시작전 완료 필수**)
+     3. **이미지 임베딩 인덱스 생성** (Create Index): target 경로가 `.../indexes/idx-image-embedding`인 작업 
+     4. **텍스트 임베딩 인덱스 생성** (Create Index): target 경로가 `.../indexes/idx-text-embedding`인 작업
 
-
-
-## Qwiklab 실습 준비 완료!
-
-<br>
-
-## 세션1: 오후 1시 30분 - 오후 3시 30분
-### [`Gemini Embedding 2 & Vector Search 2 기반 크로스 모달(Cross-Modal) 검색 엔진 개발`](https://github.com/cheeunlim/aifb-track1/tree/main/session1)
-
-<br>
-
-## 세션2: 오후 3시 30분 - 오후 5시 00분
-### [`Gemini Live API와 크로스 모달(Cross-Modal) 검색 엔진을 결합한 실시간 대화형 멀티모달 쇼핑 에이전트 개발`](https://github.com/cheeunlim/aifb-track1/tree/main/session2)
-
-<br>
