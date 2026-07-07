@@ -49,8 +49,8 @@ GCP Workbench 환경에서 실행할 수 있는 노트북 형식에 최적화되
 ---
 
 ## **사용 방법 및 팁**
-1.  **노트북 실행**: `multimodal_search_v2.ipynb` 파일을 GCP Workbench 또는 Jupyter 환경에서 엽니다.
-2.  **API 키 구성**: Cell 3에 Google AI Studio에서 가져온 Gemini API 키를 입력합니다.
+1.  **노트북 실행**: JupyterLab 왼쪽 패널에서 `aifb-track1` > `session1` > `multimodal_search.ipynb` 파일을 더블 클릭하여 엽니다.
+2.  **API 키 구성**: Cell 3에 이전에서 복사해둔 Gemini API 키 값인 `GeminiLabKey`값을 입력합니다.
 3.  **가속 꿀팁 (Lifeline Fallback)**: API 할당량 제한이나 전처리 시간 단축을 위해 Cell 23에서 미리 생성되어 공개 배포된 `https://storage.googleapis.com/ai-multimodal-data/full_dataset_registry.pkl` 레지스트리를 다운받아 실습을 진행할 수 있습니다.
 
 ---
@@ -113,8 +113,8 @@ Execute a secure clean-up script to force-delete the serverless collection via a
 ---
 
 ## **Usage & Acceleration Tips**
-1.  **Launch**: Open `multimodal_search_v2.ipynb` in GCP Workbench or Colab.
-2.  **API Key Setup**: Add your Gemini API key inside Cell 3.
+1.  **Launch**: Double-click `aifb-track1` > `session1` > `multimodal_search.ipynb` in the left panel of JupyterLab to open it.
+2.  **API Key Setup**: Add the `GeminiLabKey` value (which you copied previously) inside Cell 3.
 3.  **Acceleration Hack**: Skip heavy extraction times by leveraging the pre-computed registry fallback in Cell 23.
 
 ---
