@@ -12,7 +12,7 @@ aifb-track1/
 ├── session1/                   # Session 1 실습자료
 ├── session2/                   # Session 2 실습자료
 ├── install.sh                  # 실습 환경 프로비져닝 스크립트
-├── session2_index_builder.sh   # 실습 환경 프로비져닝 스크립트
+├── session2_index_builder.py   # 실습 환경 프로비져닝 스크립트
 └── README.md                   # Workshop 개요
 ```
 
