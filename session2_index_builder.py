@@ -86,14 +86,15 @@ def create_index(index_field: str):
     # Make the request
     return client.create_index(request=request)
 
-operation = create_index("image_embedding")
-while operation.done() == False:
-    time.sleep(1)
-print(f"Image embedding index created at {datetime.now()}")
-time.sleep(30)
 
 operation = create_index("text_embedding")
 while operation.done() == False:
     time.sleep(1)
 print(f"Text embedding index created at {datetime.now()}")
+time.sleep(30)
+
+operation = create_index("image_embedding")
+while operation.done() == False:
+    time.sleep(1)
+print(f"Image embedding index created at {datetime.now()}")
 time.sleep(30)
