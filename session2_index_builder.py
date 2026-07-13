@@ -7,6 +7,8 @@ COLLECTION_ID="amazon-product-768-compact"
 
 from datetime import datetime
 from google.cloud import vectorsearch_v1
+from google.api_core import retry as google_retry
+from google.api_core import exceptions
 
 # Create the client
 vector_search_service_client = vectorsearch_v1.VectorSearchServiceClient()
@@ -36,8 +38,24 @@ request = vectorsearch_v1.CreateCollectionRequest(
     collection=collection,
 )
 
+custom_retry = google_retry.Retry(
+    predicate=google_retry.if_exception_type(
+        exceptions.ServiceUnavailable,
+        exceptions.DeadlineExceeded,
+        exceptions.InternalServerError,
+    ),
+    initial=1.0,      # 최초 재시도 전 대기 시간 (1초)
+    maximum=10.0,     # 최대 대기 시간 (10초)
+    multiplier=2.0,   # 대기 시간 배수 (1초 -> 2초 -> 4초 ...)
+    deadline=60.0     # 총 재시도를 시도할 최대 시간 (60초)
+)
+
 # Create the collection
-operation = vector_search_service_client.create_collection(request=request)
+operation = vector_search_service_client.create_collection(
+    request=request,
+    retry=custom_retry,
+    timeout=60.0  # 개별 RPC 요청의 타임아웃
+    )
 
 # Wait for the result (note this may take up to several minutes)
 while operation.done() == False:
@@ -56,7 +74,11 @@ request = vectorsearch_v1.ImportDataObjectsRequest(
 
 # Make the request
 print(datetime.now()) 
-operation = vector_search_service_client.import_data_objects(request=request)
+operation = vector_search_service_client.import_data_objects(
+    request=request,
+    retry=custom_retry,
+    timeout=60.0  # 개별 RPC 요청의 타임아웃
+    )
 
 while operation.done() == False:
     time.sleep(1)
@@ -77,7 +99,11 @@ def create_index(client, index_field: str):
     )
     
     # Make the request
-    return client.create_index(request=request)
+    return client.create_index(
+        request=request,
+        retry=custom_retry,
+        timeout=60.0  # 개별 RPC 요청의 타임아웃
+        )
 
 operation = create_index(vector_search_service_client, "text_embedding")
 while operation.done() == False:
